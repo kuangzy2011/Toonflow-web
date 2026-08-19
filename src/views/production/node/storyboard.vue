@@ -129,6 +129,7 @@ import projectStore from "@/stores/project";
 import productionAgentStore from "@/stores/productionAgent";
 const { project } = storeToRefs(projectStore());
 const { episodesId } = storeToRefs(productionAgentStore());
+import { DialogPlugin } from 'tdesign-vue-next';
 
 const props = defineProps<{
   id: string;

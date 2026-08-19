@@ -120,6 +120,7 @@ import { useLayout } from "./utils/dagre";
 import { useFlowBuilder } from "./utils/flowBuilder";
 import axios from "@/utils/axios";
 import projectStore from "@/stores/project";
+import { DialogPlugin } from 'tdesign-vue-next';
 
 const { project } = storeToRefs(projectStore());
 import settingStore from "@/stores/setting";

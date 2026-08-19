@@ -115,6 +115,7 @@ import { ref } from "vue";
 import "@/views/production/components/workbench/type/type";
 import assetsCheck, { type AssetType, type ClipMediaType } from "@/utils/assetsCheck";
 import axios from "@/utils/axios";
+import { DialogPlugin } from 'tdesign-vue-next';
 
 const props = defineProps<{
   mode: VideoMode;

@@ -186,11 +186,11 @@
             <div class="promptEditorWrapper">
               <div class="promptEditorHeader">
                 <div class="aiExtractInline">
-                  <t-tabs :value="visualManualTabValue" size="medium" @change="(v) => (visualManualTabValue = v)">
+                  <t-tabs :value="visualManualTabValue" size="medium" @change="(v: string | number) => (visualManualTabValue = v)">
                     <t-tab-panel v-for="tab in visualManualTabData" :key="tab.value" :value="tab.value" :label="tab.label">
                       <MdEditor
                         v-model="tab.data"
-                        :theme="themeSetting.mode"
+                        :theme="mdEditorTheme"
                         :toolbars="promptToolbars"
                         :footers="[]"
                         :placeholder="$t('workbench.project.dialog.promptPlaceholder')"
@@ -257,11 +257,11 @@
             <div class="promptEditorWrapper">
               <div class="promptEditorHeader">
                 <div class="aiExtractInline">
-                  <t-tabs :value="directorManualTabValue" size="medium" @change="(v) => (directorManualTabValue = v)">
+                  <t-tabs :value="directorManualTabValue" size="medium" @change="(v: string | number) => (directorManualTabValue = v)">
                     <t-tab-panel v-for="tab in directorManualTabData" :key="tab.value" :value="tab.value" :label="tab.label">
                       <MdEditor
                         v-model="tab.data"
-                        :theme="themeSetting.mode"
+                        :theme="mdEditorTheme"
                         :toolbars="promptToolbars"
                         :footers="[]"
                         :placeholder="$t('workbench.project.dialog.promptPlaceholder')"
@@ -290,6 +290,15 @@ import type { ToolbarNames } from "md-editor-v3";
 import modelSelect from "@/components/modelSelect.vue";
 import type { TabValue } from "tdesign-vue-next";
 import { DialogPlugin } from "tdesign-vue-next";
+
+const mdEditorTheme = computed(() => {
+  const mode = themeSetting.value.mode;
+  if (mode === 'auto') {
+    const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    return isDark ? 'dark' : 'light';
+  }
+  return mode;
+});
 
 const addProjectShow = defineModel<boolean>();
 const props = defineProps<{

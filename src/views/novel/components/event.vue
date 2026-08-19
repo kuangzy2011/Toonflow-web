@@ -75,6 +75,8 @@ import axios from "@/utils/axios";
 import dayjs from "dayjs";
 import projectStore from "@/stores/project";
 const { project } = storeToRefs(projectStore());
+import { DialogPlugin } from 'tdesign-vue-next';
+
 // 分页信息
 const pagination = ref({
   page: 1,

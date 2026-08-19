@@ -117,6 +117,7 @@ import projectStore from "@/stores/project";
 import settingStore from "@/stores/setting";
 const { otherSetting } = storeToRefs(settingStore());
 const { project } = storeToRefs(projectStore());
+import { DialogPlugin } from 'tdesign-vue-next';
 
 // 搜索文本
 const searchText = ref("");

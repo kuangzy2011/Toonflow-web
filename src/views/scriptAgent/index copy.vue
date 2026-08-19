@@ -181,6 +181,7 @@ import type { TabValue } from "tdesign-vue-next/es/tabs/type";
 import { useChat } from "@/utils/useChat";
 const { baseUrl } = storeToRefs(settingStore());
 const { project } = storeToRefs(projectStore());
+import { DialogPlugin } from 'tdesign-vue-next';
 
 const inputValue = ref("");
 const loadingHistory = ref(false);
@@ -432,7 +433,7 @@ async function handleSelectAssets() {
   if (assets.length) {
     const existing = new Set(scriptEditData.value.relatedAssets.map((a) => a.id));
     for (const a of assets) {
-      if (!existing.has(a.id)) {
+      if (!existing.has(a.id)  && a.type !== 'audio') {
         scriptEditData.value.relatedAssets.push({ id: a.id, name: a.name, describe: a.describe, prompt: a.prompt, type: a.type });
       }
     }

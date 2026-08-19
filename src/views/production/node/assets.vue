@@ -81,6 +81,7 @@ import editImage from "../components/editImage/index.vue";
 import { type AssetItem, type DeriveAsset } from "../utils/flowBuilder";
 import axios from "@/utils/axios";
 import useProjectStore from "@/stores/project";
+import { DialogPlugin } from 'tdesign-vue-next';
 const { project } = storeToRefs(useProjectStore());
 const props = defineProps<{
   id: string;

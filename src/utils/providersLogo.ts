@@ -1,14 +1,16 @@
 // 动态加载 src/assets/providers 下所有图标
-const iconModules = import.meta.glob<string>("@/assets/providers/*.{webp,png}", {
+// 动态加载 src/assets/providers 下所有图标
+const iconModules = import.meta.glob<{ default: string }>("@/assets/providers/*.{webp,png}", {
   eager: true,
   query: "?url",
   import: "default",
 });
 
 /** 从本地 assets/providers 获取图标 URL */
-function icon(id: string): string {
-  for (const [key, url] of Object.entries(iconModules)) {
+export function icon(id: string): string {
+  for (const [key, mod] of Object.entries(iconModules)) {
     const filename = key.split("/").pop()?.split(".")[0];
+    const url = mod.default;
     if (filename === id) return url;
   }
   return "";

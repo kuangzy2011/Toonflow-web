@@ -81,6 +81,7 @@
 import type { Ref } from "vue";
 import axios from "@/utils/axios";
 import projectStore from "@/stores/project";
+import { DialogPlugin } from 'tdesign-vue-next';
 
 const props = defineProps<{
   activeTrackIndex: number;

@@ -143,6 +143,8 @@ import modelSelect from "@/components/modelSelect.vue";
 import projectStore from "@/stores/project";
 const { project } = storeToRefs(projectStore());
 import axios from "@/utils/axios";
+import { DialogPlugin } from 'tdesign-vue-next';
+
 const props = defineProps<{
   formData: {
     id?: number;

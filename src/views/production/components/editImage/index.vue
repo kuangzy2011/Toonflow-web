@@ -80,6 +80,7 @@ import type { NodeType, UploadNodeData, GeneratedNodeData } from "../../utils/ed
 import { DEFAULT_EDGE_OPTIONS, createGeneratedData, cleanNodes, cleanEdges } from "../../utils/editImageType";
 import { useLayout } from "../../utils/dagre";
 import { v4 as uuid } from "uuid";
+import { DialogPlugin } from 'tdesign-vue-next';
 
 const episodesId = inject<Ref<number>>("episodesId");
 const { project } = storeToRefs(projectStore());
