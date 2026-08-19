@@ -13,7 +13,7 @@
     attach="body">
     <MdEditor
       v-model="editContent"
-      :theme="themeSetting.mode"
+      :theme="mdEditorTheme"
       :toolbars="toolbars"
       :footers="[]"
       style="height: 72vh"
@@ -28,6 +28,16 @@ import { MdEditor } from "md-editor-v3";
 import type { ToolbarNames } from "md-editor-v3";
 import settingStore from "@/stores/setting";
 const { themeSetting } = storeToRefs(settingStore());
+
+// 关键：把 auto → 解析为系统 light/dark
+const mdEditorTheme = computed(() => {
+  const mode = themeSetting.value.mode;
+  if (mode === 'auto') {
+    const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    return isDark ? 'dark' : 'light';
+  }
+  return mode;
+});
 
 const props = defineProps<{
   content: string;

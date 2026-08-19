@@ -55,7 +55,7 @@ function handleSubmit() {
 }
 
 function handleReset() {
-  formData.value.baseUrl = "http://localhost:10588";
+  formData.value.baseUrl = "/";
   baseUrl.value = formData.value.baseUrl;
   window.$message.success($t("settings.request.msg.reset"));
 }

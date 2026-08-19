@@ -65,7 +65,7 @@
               </template>
             </t-popup>
             <t-popup trigger="click" placement="top" v-if="showThink">
-              <t-button size="small" variant="outline" :theme="['default', 'success', 'warning', 'danger'][thinkLevel] || 'default'">
+              <t-button size="small" variant="outline" :theme="thinkTheme">
                 <template #icon>
                   <i-tips size="16" />
                 </template>
@@ -97,6 +97,7 @@ import _ from "lodash";
 import axios from "@/utils/axios";
 import productionAgentStore from "@/stores/productionAgent";
 import projectStore from "@/stores/project";
+import { DialogPlugin } from 'tdesign-vue-next';
 const { project } = storeToRefs(projectStore());
 const { connected, messages, status, episodesId, loadingHistory, thinkLevel } = storeToRefs(productionAgentStore());
 const thinkLevelOptions = [
@@ -105,6 +106,11 @@ const thinkLevelOptions = [
   { label: $t("workbench.scriptAgent.thinkLevel.deep"), value: 2 },
   { label: $t("workbench.scriptAgent.thinkLevel.extreme"), value: 3 },
 ];
+
+const thinkTheme = computed(() => {
+  const arr = ['default', 'success', 'warning', 'danger'] as const
+  return arr[thinkLevel.value] ?? 'default'
+})
 
 const props = defineProps({ title: String });
 

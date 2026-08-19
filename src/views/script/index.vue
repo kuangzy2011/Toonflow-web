@@ -81,6 +81,7 @@ import batchAddScript from "./components/batchAddScript.vue";
 import projectStore from "@/stores/project";
 import settingStore from "@/stores/setting";
 import imageListCacheStore from "@/stores/imageListCache";
+import { DialogPlugin } from 'tdesign-vue-next';
 
 const { clearScriptCache } = imageListCacheStore();
 

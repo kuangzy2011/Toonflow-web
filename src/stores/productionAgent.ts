@@ -33,7 +33,10 @@ function makeProductionAgentStore(projectId: string) {
       assets: [], // 衍生资产
       storyboard: [], //分镜面板
       workbench: {
-        videoList: [],
+        name: "",
+        duration: "0",
+        resolution: "[1024, 576]",
+        fps: "24",
       }, // 工作台数据
     });
 

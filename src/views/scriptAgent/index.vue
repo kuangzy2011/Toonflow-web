@@ -217,6 +217,7 @@ import projectStore from "@/stores/project";
 const { project } = storeToRefs(projectStore());
 import editMdPreivew from "@/components/editMdPreivew.vue";
 import scriptAgentStore from "@/stores/scriptAgent";
+import { DialogPlugin } from 'tdesign-vue-next';
 const { connected, messages, status, planData, thinkLevel } = storeToRefs(scriptAgentStore());
 const thinkLevelOptions = [
   { label: $t("workbench.scriptAgent.thinkLevel.off"), value: 0 },

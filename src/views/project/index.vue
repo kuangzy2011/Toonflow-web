@@ -56,6 +56,7 @@ import dayjs from "dayjs";
 import axios from "@/utils/axios";
 import projectStore from "@/stores/project";
 import imageListCacheStore from "@/stores/imageListCache";
+import { DialogPlugin } from 'tdesign-vue-next';
 
 const { clearProjectCache } = imageListCacheStore();
 const { allProject, project } = storeToRefs(projectStore());

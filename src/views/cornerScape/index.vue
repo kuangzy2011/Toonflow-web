@@ -250,6 +250,7 @@ import projectStore from "@/stores/project";
 import modelSelect from "@/components/modelSelect.vue";
 import settingStore from "@/stores/setting";
 import openAssetsSelector from "@/utils/assetsCheck";
+import { DialogPlugin } from 'tdesign-vue-next';
 
 const { otherSetting } = storeToRefs(settingStore());
 interface Image {

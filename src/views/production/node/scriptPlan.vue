@@ -8,7 +8,7 @@
     </div>
     <div class="content">
       <t-empty v-if="!scriptPlan" style="margin-top: 16px"></t-empty>
-      <MdPreview v-else v-model="scriptPlan" :theme="themeSetting.mode" />
+      <MdPreview v-else v-model="scriptPlan" :theme="mdEditorTheme" />
     </div>
   </t-card>
 
@@ -26,7 +26,7 @@
     attach="body">
     <MdEditor
       v-model="editContent"
-      :theme="themeSetting.mode"
+      :theme="mdEditorTheme"
       :toolbars="toolbars"
       :footers="[]"
       style="height: 72vh"
@@ -44,6 +44,15 @@ import type { ToolbarNames } from "md-editor-v3";
 import productionAgentStore from "@/stores/productionAgent";
 import settingStore from "@/stores/setting";
 const { themeSetting } = storeToRefs(settingStore());
+
+const mdEditorTheme = computed(() => {
+  const mode = themeSetting.value.mode;
+  if (mode === 'auto') {
+    const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    return isDark ? 'dark' : 'light';
+  }
+  return mode;
+});
 
 const props = defineProps<{
   id: string;

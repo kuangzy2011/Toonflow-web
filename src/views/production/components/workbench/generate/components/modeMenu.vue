@@ -4,7 +4,7 @@
       <div class="model">
         <modelSelect v-model="modelParmas.model" type="video" size="small" />
       </div>
-      <t-select size="small" class="mode" :value="modelParmas.mode" :onChange="handleBeforeChange">
+      <t-select size="small" class="mode" :value="modelParmas.mode" @onChange="handleBeforeChange">
         <t-option v-for="(item, index) in modeList" :key="index" :value="item.value" :label="item.label"></t-option>
       </t-select>
       <t-button
@@ -78,6 +78,7 @@
 <script setup lang="ts">
 import "@/views/production/components/workbench/type/type";
 import axios from "@/utils/axios";
+import { DialogPlugin } from 'tdesign-vue-next';
 
 const props = defineProps<{
   modeOptions: VideoModel;
@@ -94,9 +95,15 @@ const modelParmas = defineModel<ModelSetting>({
   },
 });
 const emit = defineEmits(["modeChange"]);
-function handleBeforeChange(newVal: string) {
-  emit("modeChange", newVal);
+
+import type { SelectValue } from 'tdesign-vue-next';
+
+function handleBeforeChange(newVal: SelectValue) {
+  if (typeof newVal === 'string') {
+    modelParmas.value.mode = newVal;
+  }
 }
+
 function updateDuration(newDuration: number) {
   modelParmas.value.duration = newDuration;
   if (props.trackId) axios.post("/production/workbench/updateVideoDuration", { id: props.trackId, duration: newDuration });

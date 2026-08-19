@@ -14,6 +14,7 @@
           <t-button size="small" variant="outline" @click="batchGenVideo" :loading="generateVideoLoad">
             {{ $t("workbench.generate.batchGenerateVideo") }}
           </t-button>
+          <t-button size="small" variant="outline" theme="danger" @click="batchDeleteTracks">{{ $t("workbench.generate.batchDelete") }}</t-button>
           <!-- <t-button size="small" variant="outline" @click="importVideo">{{ $t("workbench.generate.importVideo") }}</t-button> -->
         </div>
       </div>
@@ -75,6 +76,7 @@ import projectStore from "@/stores/project";
 import imageListCacheStore from "@/stores/imageListCache";
 import JSZip from "jszip";
 import settingStore from "@/stores/setting";
+import { DialogPlugin } from 'tdesign-vue-next';
 
 const { otherSetting } = storeToRefs(settingStore());
 const { project } = storeToRefs(projectStore());
@@ -193,6 +195,44 @@ function confirmDeleteTrack(index: number) {
     },
   });
 }
+/** 批量删除已勾选的轨道 */
+function batchDeleteTracks() {
+  if (!checkedTrackIds.value.length) {
+    return window.$message.warning($t("workbench.generate.selectTrackFirst"));
+  }
+  const dialog = DialogPlugin.confirm({
+    header: $t("workbench.generate.del"),
+    body: $t("workbench.generate.batchDeleteConfirm", { count: checkedTrackIds.value.length }),
+    confirmBtn: $t("settings.generate.delConfirmBtn"),
+    cancelBtn: $t("settings.memory.msg.cancel"),
+    theme: "warning",
+    onConfirm: async () => {
+      try {
+        const ids = [...checkedTrackIds.value];
+        await Promise.all(ids.map((id) => axios.post("/production/workbench/deleteTrack", { id })));
+        // 清理已删除轨道的图片缓存
+        const pid = project.value?.id;
+        const sid = episodesId.value;
+        if (pid != null && sid != null) {
+          ids.forEach((id) => removeCache(pid, sid, id));
+        }
+        // 当前活动轨道被删除时，重置到首段
+        const activeTrackId = trackList.value[activeTrackIndex.value]?.id;
+        if (activeTrackId != null && ids.includes(activeTrackId)) {
+          activeTrackIndex.value = 0;
+        }
+        checkedTrackIds.value = [];
+        checkAll.value = false;
+        window.$message.success($t("workbench.generate.delSuccess"));
+        emit("getData");
+      } catch (e: any) {
+        window.$message.error(e?.message ?? $t("workbench.generate.batchDeleteFail"));
+      } finally {
+        dialog.destroy();
+      }
+    },
+  });
+}
 async function addTrack() {
   const { data: modelData } = await axios.post("/modelSelect/getModelDetail", { modelId: props.modelParmas.model });
   const drMap = modelData.durationResolutionMap;
@@ -249,7 +289,7 @@ function batchGenText() {
     const trackId = track.id;
     let info = [];
     if (props.modelParmas.mode == "text") {
-      info = track?.medias.map(({ id, sources }) => ({ id, sources }));
+      info = track?.medias.map(({ id, sources, fileType }) => ({ id, sources, fileType }));
     } else {
       info = getTrackUploadInfo(track);
     }
@@ -292,12 +332,15 @@ function getTrackUploadInfo(track: TrackItem, filterEmpty = false) {
 
   if (track.id === activeTrackId) {
     const items = props.imageList as UploadItem[];
-    return (filterEmpty ? items.filter((item) => Boolean(item.src)) : items).map(({ id, sources }) => ({
+    return (filterEmpty ? items.filter((item) => Boolean(item.src)) : items).map(({ id, sources, fileType }) => ({
       id,
       sources: (sources ?? "storyboard") as string,
+      fileType,
     }));
   }
-  return track.medias.filter((m) => !filterEmpty || Boolean(m.src)).map(({ id, sources }) => ({ id, sources: (sources ?? "storyboard") as string }));
+  return track.medias
+    .filter((m) => !filterEmpty || Boolean(m.src))
+    .map(({ id, sources, fileType }) => ({ id, sources: (sources ?? "storyboard") as string, fileType }));
 }
 const generateVideoLoad = ref(false);
 /** 批量为已勾选轨道生成视频 */

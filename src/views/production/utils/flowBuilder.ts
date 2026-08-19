@@ -63,15 +63,23 @@ interface VideoList {
   trackId: number;
 }
 
+interface WorkbenchData {
+  name: string;
+  duration: string;
+  resolution: string;
+  fps: string;
+  cover?: string;
+  gradient?: string;
+}
+
+
 export interface FlowData {
   script: string;
   scriptPlan: string;
   assets: AssetItem[];
   storyboardTable: string;
   storyboard: Storyboard[];
-  workbench: {
-    videoList: VideoList[];
-  };
+  workbench: WorkbenchData;
 }
 
 export type NodePositions = Record<string, { x: number; y: number }>;

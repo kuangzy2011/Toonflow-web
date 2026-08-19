@@ -443,6 +443,7 @@ import generateImage from "./components/generateImage.vue";
 import projectStore from "@/stores/project";
 import settingStore from "@/stores/setting";
 const { otherSetting } = storeToRefs(settingStore());
+import { DialogPlugin } from 'tdesign-vue-next';
 
 const props = withDefaults(
   defineProps<{
