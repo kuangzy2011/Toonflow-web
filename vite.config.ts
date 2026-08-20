@@ -89,6 +89,6 @@ export default defineConfig({
     },
   },
   server: {
-    port: 50188,
+    port: 10588,
   },
 });
